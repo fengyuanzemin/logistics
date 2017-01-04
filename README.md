@@ -18,29 +18,28 @@ use logistics;
 
 create table user (
 	id int not null  auto_increment primary key,
-	name varchar(20) not null,
+	name varchar(20) default '张飞',
 	phone varchar(30) not null,
-	admin int not null,
-	address varchar(50) not null,
-	passsword varchar(50) not null,
-	sex char(1) not null,
-	email varchar(30) not null);
+	admin int default 0,
+	address varchar(50) default '',
+	password varchar(50) not null,
+	sex char(1) default 'm',
+	email varchar(30) default '233333@qq.com');
 	
 create table logistics (
 	id int not null auto_increment primary key,
-	finish char(1) not null,
+	finish int default 0,
 	userId int not null,
 	foreign key (userId)  references user (id)
 );
 
 create table detail (
 	id int not null auto_increment primary key,
-	createAt varchar(30) not null,
+	createAt timestamp not null,
 	`action` varchar(100) not null,
 	logisticsId int not null,
 	foreign key (logisticsId) references `logistics`(id)
 );
-
 ```
 
 

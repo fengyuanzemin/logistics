@@ -2,7 +2,7 @@
  * Created by fengyuanzemin on 17/1/4.
  */
 var mysql = require('mysql');
-var config = require('../config');
+var config = require('./config');
 
 var option = {
     host: config.db_host,
@@ -17,7 +17,7 @@ var DB = {};
 module.exports = DB;
 
 //sql语句执行
-DB.exec = function (sql, values, after) {
+DB.exec = function (sql, after) {
     var connection = mysql.createConnection(option);
     connection.connect(function (err) {
         if (err) {
@@ -25,7 +25,7 @@ DB.exec = function (sql, values, after) {
         }
         console.log('connected as id ' + connection.threadId);
 
-        connection.query(sql || '', values || [], function (err, rows) {
+        connection.query(sql || '', function (err, rows) {
             after(err, rows);
         });
         //关闭数据库连接
