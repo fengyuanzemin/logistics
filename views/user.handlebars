@@ -19,6 +19,7 @@
                        autocomplete="off" value="{{user.name}}">
                 <input type="password" class="form-control" name="password" placeholder="修改密码"
                        required value="{{user.password}}">
+                <input type="hidden" name="id" value="{{user.id}}">
                 <textarea name="address" title="地址" class="form-control" cols="30" rows="4">{{user.address}}</textarea>
                 <input class="btn btn-primary btn-block" type="submit" value="完成">
             </form>

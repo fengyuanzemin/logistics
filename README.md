@@ -19,7 +19,7 @@ use logistics;
 create table if not exists user (
 	id int not null  auto_increment primary key,
 	name varchar(20) default '张飞',
-	phone varchar(30) not null,
+	phone varchar(30) not null unique,
 	admin int default 0,
 	address varchar(50) default '',
 	password varchar(50) not null,
