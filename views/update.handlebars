@@ -1,23 +1,17 @@
-<!-- 登录页 -->
 <div class="container">
     {{>header}}
     {{>alert}}
     <div class="row login-box">
         <div class="login col-lg-4 col-md-6 col-sm-8 col-xs-10">
-            <h4 class="login-header text-center">注册</h4>
-            <form action="/register" method="POST" class="login-body" role="form">
+            <h4 class="login-header text-center">更新资料</h4>
+            <form action="/login" method="POST" class="login-body" role="form">
                 <input type="text" class="form-control" name="phone" placeholder="手机号" required
-                       autofocus="true" autocomplete="off" maxlength="11">
+                       autofocus="true" autocomplete="off">
                 <input type="password" class="form-control" name="password" placeholder="密码"
                        required>
-                <input type="password" class="form-control" name="password2" placeholder="确认密码"
-                       required>
                 <input class="btn btn-primary btn-block" type="submit" value="完成">
-                <a href="/login" class="login-checkout float-xs-right">已有账号？去登录</a>
+                <a href="/register" class="login-checkout float-xs-right">没有账号？去注册</a>
             </form>
         </div>
     </div>
 </div>
-<style>
-
-</style>

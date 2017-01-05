@@ -2,10 +2,14 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../model/user');
+var User = require('../model/User');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    if (res.locals.user) {
+        res.redirect('/admin');
+        return;
+    }
     res.render('index', {title: '首页'});
 });
 

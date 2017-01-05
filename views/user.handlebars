@@ -1,4 +1,32 @@
 <div class="container">
     {{>header}}
     {{>alert}}
+    <div class="row login-box">
+        <div class="login col-lg-4 col-md-6 col-sm-8 col-xs-10" style="padding-bottom: 15px;top:0;">
+            <h4 class="login-header text-center">个人资料修改</h4>
+            <form action="/admin/userUpdate" method="POST" class="login-body" role="form">
+                <input type="tel" class="form-control" name="phone" placeholder="修改手机号" required
+                       autocomplete="off" value="{{user.phone}}">
+                <label class="login-item form-check-inline">
+                    <input class="form-check-input" type="radio" name="sex" value="m"> 男
+                </label>
+                <label class="login-item form-check-inline">
+                    <input class="form-check-input" type="radio" name="sex" value="f"> 女
+                </label>
+                <input type="email" class="form-control" name="email" placeholder="修改邮箱" required
+                       autocomplete="off" value="{{user.email}}">
+                <input type="text" class="form-control" name="name" placeholder="修改昵称" required
+                       autocomplete="off" value="{{user.name}}">
+                <input type="password" class="form-control" name="password" placeholder="修改密码"
+                       required value="{{user.password}}">
+                <textarea name="address" title="地址" class="form-control" cols="30" rows="4">{{user.address}}</textarea>
+                <input class="btn btn-primary btn-block" type="submit" value="完成">
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+    var sex = '{{user.sex}}';
+    $('.form-check-inline').find('input[value="'+sex+'"]').prop('checked','checked');
+</script>

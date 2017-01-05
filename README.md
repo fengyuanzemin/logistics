@@ -31,13 +31,14 @@ create table  if not exists logistics (
 	id int not null auto_increment primary key,
 	finish int default 0,
 	userId int not null,
+	title varchar(50) not null,
 	`describe` varchar(50),
 	foreign key (userId)  references user (id)
 );
 
 create table  if not exists detail (
 	id int not null auto_increment primary key,
-	createAt timestamp not null,
+	createAt timestamp default current_timestamp,
 	`action` varchar(100) not null,
 	logisticsId int not null,
 	foreign key (logisticsId) references `logistics`(id)

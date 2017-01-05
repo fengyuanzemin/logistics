@@ -15,7 +15,7 @@ var User = {};
 //根据证件号查找用户
 User.findUserByPhone = function (phone, callback) {
     var sql = "select * from user where phone='" + phone + "';";
-    db.exec(sql, function (err, rows) {
+    db.exec(sql, '', function (err, rows) {
         if (err) {
             return callback(err);
         }
@@ -26,13 +26,13 @@ User.findUserByPhone = function (phone, callback) {
 
 // 用户注册
 User.register = function (phone, password, callback) {
-    var sql = "insert into user (phone, password) values ('" + phone + "', '" + password + "')";
-    db.exec(sql, function (err, rows) {
+    var sql = "insert into user (`phone`, `password`) values ('" + phone + "', '" + password + "')";
+    db.exec(sql, '', function (err, res) {
         if (err) {
             return callback(err);
         }
-        var sql = "select * from user where phone='" + phone + "';";
-        db.exec(sql, function (err, rows) {
+        var sql = "select * from user where id='" + res.insertId + "';";
+        db.exec(sql, '', function (err, rows) {
             if (err) {
                 return callback(err);
             }

@@ -1,3 +1,52 @@
 html, body {
     background-color: #f2f2f2;
 }
+
+.text-center {
+    text-align: center;
+    font-weight: 300;
+}
+
+.login-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 54px);
+}
+
+.login-box .login {
+    background-color: #ffffff;
+    position: relative;
+    top: -45px;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.login-box .login .login-header {
+    padding: 15px 0;
+}
+
+.login-box .login .login-body {
+    padding-bottom: 15px;
+}
+
+.login-box .login .login-body input {
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+.login-box .login .login-body input:nth-last-of-type(1) {
+    margin-bottom: 0;
+}
+
+.login-box .login .login-body textarea {
+    margin-bottom: 15px;
+}
+
+.login-box .login .login-body .login-item {
+    margin-bottom: 15px;
+}
+
+.login-box .login .login-body .login-checkout {
+    padding: 15px 0;
+}
