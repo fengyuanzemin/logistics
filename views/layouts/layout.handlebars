@@ -8,48 +8,16 @@
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/tether.min.css">
+    <link rel="stylesheet" href="/css/jquery.fullpage.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<!-- 公共头部 -->
-<div class="container">
-    <nav class="navbar navbar-light">
-        <a class="navbar-brand" href="/">物流管理信息系统</a>
-        <ul class="nav navbar-nav float-xs-right">
-            {{#if user}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/user">{{user.name}}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">退出</a>
-                </li>
-            {{else}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">登录</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">注册</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">后台管理</a>
-                </li>
-            {{/if}}
-        </ul>
-    </nav>
-    <div class='container'>
-        {{#if success_msg}}
-            <div class="alert alert-success">{{success_msg}}</div>
-        {{/if}}
-        {{#if error_msg}}
-            <div class="alert alert-danger">{{error_msg}}</div>
-        {{/if}}
-    </div>
 
-    <!-- 内容部分 -->
-    {{{body}}}
-</div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/tether.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.fullpage.min.js"></script>
+<!-- 内容部分 -->
+{{{body}}}
 </body>
 </html>

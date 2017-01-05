@@ -16,7 +16,7 @@ collate utf8_general_ci;
 
 use logistics;
 
-create table user (
+create table if not exists user (
 	id int not null  auto_increment primary key,
 	name varchar(20) default '张飞',
 	phone varchar(30) not null,
@@ -24,16 +24,18 @@ create table user (
 	address varchar(50) default '',
 	password varchar(50) not null,
 	sex char(1) default 'm',
-	email varchar(30) default '233333@qq.com');
+	email varchar(30) default '233333@qq.com'
+);
 	
-create table logistics (
+create table  if not exists logistics (
 	id int not null auto_increment primary key,
 	finish int default 0,
 	userId int not null,
+	`describe` varchar(50),
 	foreign key (userId)  references user (id)
 );
 
-create table detail (
+create table  if not exists detail (
 	id int not null auto_increment primary key,
 	createAt timestamp not null,
 	`action` varchar(100) not null,

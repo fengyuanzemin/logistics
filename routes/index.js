@@ -6,7 +6,11 @@ var User = require('../model/user');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('login', {title: '首页'});
+    res.render('index', {title: '首页'});
+});
+
+router.get('/list', function (req, res, next) {
+    res.render('list', {title: '物流信息'});
 });
 
 router.get('/search', function (req, res, next) {
@@ -21,6 +25,11 @@ router.get('/register', function (req, res, next) {
     res.render('register', {title: '注册'});
 });
 
+//退出登录
+router.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/login');
+});
 
 router.post('/login', function (req, res, next) {
     passport.authenticate('local-login', function (err, user, info) {
@@ -62,7 +71,7 @@ passport.use('local-login', new LocalStrategy({
 );
 
 router.post('/register', function (req, res, next) {
-    if(req.body.password !== req.body.password2) {
+    if (req.body.password !== req.body.password2) {
         req.flash('error_msg', '密码不一致');
         return res.redirect('/register');
     }
@@ -115,11 +124,7 @@ passport.deserializeUser(function (phone, done) {
 });
 
 
-//退出登录
-router.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/login');
-});
+
 
 //登录验证
 function ensureAuthenticated(req, res, next) {

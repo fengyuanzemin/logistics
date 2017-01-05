@@ -1,13 +1,15 @@
 <!-- body -->
 <div class="container">
+    {{>header}}
+    {{>alert}}
     <div class="row search-box">
-        <div class="col-lg-8">
+        <form action="/search" method="post" class="col-lg-8">
             <div class="input-group">
                 <input id="content" type="text" class="form-control" placeholder="快递单号查询">
                 <span class="input-group-btn">
               <button id="submit" class="btn btn-default" type="button">搜索</button>
             </span>
             </div>
-        </div>
+        </form>
     </div>
 </div>

@@ -1,0 +1,77 @@
+<div id="fullpage">
+    <div class="section">
+        <div class="section1">
+            <h1>物流管理信息系统</h1>
+            <form action="/search" method="post" class="search-box col-lg-6 col-md-8 col-xs-11 col-sm-10">
+                <div class="input-group">
+                    <input id="content" type="text" class="form-control" placeholder="快递单号查询" autofocus>
+                    <span class="input-group-btn">
+              <input class="btn btn-success" type="submit" value="搜索">
+            </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="section">
+        <div class="section2">
+            <h1>一站式服务</h1>
+            <p><a href="/login" class="login">已有账号？登录</a>/<a href="/register">立即注册</a></p>
+        </div>
+    </div>
+    <div class="section section3">
+        <div class="section3">
+            <h1>关于我们</h1>
+        </div>
+    </div>
+</div>
+<script>
+    $('#fullpage').fullpage();
+</script>
+<style>
+    .section1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background-image: linear-gradient(0deg, #2DB0F9 0%, #1478F0 100%);
+        flex-direction: column;
+    }
+
+    .section1 h1 {
+        margin-bottom: 80px;
+        color: #ffffff;
+    }
+
+    /*第二页*/
+    .section2, .section3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .section2 a {
+        color: #333333;
+        text-decoration: none;
+    }
+
+    .section2 h1 {
+        margin-bottom: 40px;
+    }
+
+    .section2 .login {
+        color: #1478f0;
+    }
+
+    h1 {
+        font-weight: 300;
+        color: #333333;
+    }
+
+    .search-box input {
+        font-weight: 300;
+    }
+</style>
