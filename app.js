@@ -5,7 +5,7 @@ var handlebars = require('express-handlebars');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var helpers = require('./helper/helper');
 var flash = require('connect-flash');
 
 var session = require('express-session');
@@ -20,6 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', handlebars({
     defaultLayout: 'layout',
+    helpers:helpers,//设置helper
     partialsDir: [//设置partialsdir
         'views/partials/'
     ]

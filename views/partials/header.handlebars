@@ -1,20 +1,30 @@
 <nav class="navbar navbar-light">
-    <a class="navbar-brand" href="/">物流管理信息系统</a>
-    <ul class="nav navbar-nav float-xs-right">
-        {{#if user}}
+    {{#if user}}
+        <a class="navbar-brand" href="/admin">主页</a>
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/publish">发布新物流</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav float-xs-right">
             <li class="nav-item">
                 <a class="nav-link" href="/admin/user">{{user.name}}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout">退出</a>
             </li>
-        {{else}}
+        </ul>
+    {{else}}
+        <a class="navbar-brand" href="/">物流管理信息系统</a>
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/list">物流列表</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav float-xs-right">
             <li class="nav-item">
                 <a class="nav-link" href="/login">登录</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/admin">后台管理</a>
-            </li>
-        {{/if}}
-    </ul>
+        </ul>
+    {{/if}}
 </nav>

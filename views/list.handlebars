@@ -1,5 +1,35 @@
 <div class="container">
     {{>header}}
     {{>alert}}
-    <h2>列表页</h2>
+    <div class="row">
+        {{# if list}}
+            {{#each list}}
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <div class="card card-block">
+                        <h4 class="card-title">{{title}}</h4>
+                        <p class="card-text des">{{describe}}</p>
+                        <span class="card-text tag tag-pill {{finishTagJudge finish}}">{{isFinished finish}}</span>
+                        <span class="card-text">物流单号：{{id}}</span>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <div class="card card-block">
+                    <h4 class="card-title">暂无物流</h4>
+                    <p class="card-text des"></p>
+                </div>
+            </div>
+        {{/if}}
+    </div>
 </div>
+<style>
+    .des {
+        height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
+</style>

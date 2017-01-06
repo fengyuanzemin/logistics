@@ -4,12 +4,11 @@
             <h1>物流管理信息系统</h1>
             <form action="/search" method="post" class="search-box col-lg-6 col-md-8 col-xs-11 col-sm-10">
                 <div class="input-group">
-                    <input id="content" type="text" class="form-control" placeholder="快递单号查询" autofocus>
-                    <span class="input-group-btn">
-              <input class="btn btn-success" type="submit" value="搜索">
-            </span>
+                    <input type="text" class="form-control" autocomplete="off" name="id" placeholder="物流单号查询" autofocus>
+                    <span class="input-group-btn"><input class="btn btn-success" type="submit" value="搜索"></span>
                 </div>
             </form>
+            <a href="/list" class="to-list">去看别人发物流信息</a>
         </div>
     </div>
     <div class="section">
@@ -28,6 +27,7 @@
     $('#fullpage').fullpage();
 </script>
 <style>
+    /*第一页*/
     .section1 {
         display: flex;
         justify-content: center;
@@ -36,10 +36,27 @@
         height: 100vh;
         background-image: linear-gradient(0deg, #2DB0F9 0%, #1478F0 100%);
         flex-direction: column;
+        position: relative;
     }
 
     .section1 h1 {
         margin-bottom: 80px;
+        color: #ffffff;
+    }
+
+    .section1 h1::selection {
+        color: #333333;
+    }
+
+    .to-list {
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+        color: #eeeeee;
+    }
+
+    .to-list:hover {
+        text-decoration: none;
         color: #ffffff;
     }
 

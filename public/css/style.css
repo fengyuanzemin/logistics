@@ -50,3 +50,22 @@ html, body {
 .login-box .login .login-body .login-checkout {
     padding: 15px 0;
 }
+
+/**/
+.button-blue {
+    background-image: linear-gradient(90deg, #2db0f9 0%, #1478f0 100%);
+    font-weight: 300;
+    color: #ffffff;
+    -webkit-appearance: none;
+    outline: none;
+}
+
+.button-blue:active {
+    background-image: linear-gradient(90deg, #1478f0 0%, #2db0f9 100%);
+    -webkit-appearance: none;
+    outline: none;
+}
+
+.button-blue:focus {
+    outline: none;
+}

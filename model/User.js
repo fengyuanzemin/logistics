@@ -43,8 +43,8 @@ User.register = function (phone, password, callback) {
 };
 
 // 用户信息更新
-User.update = function (phone, name, password, sex, email, address, id, callback) {
-    var sql = "update `user` set phone='" + phone + "', name='" + name + "', " +
+User.update = function (name, password, sex, email, address, id, callback) {
+    var sql = "update `user` set name='" + name + "', " +
         "password='" + password + "', sex='" + sex + "', email='" + email + "', " +
         "address='" + address + "' where id=" + id+";";
     db.exec(sql, '', function (err, res) {

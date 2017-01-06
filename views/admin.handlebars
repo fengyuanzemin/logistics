@@ -1,14 +1,36 @@
 <div class="container">
     {{>header}}
     {{>alert}}
-    <div class="jumbotron">
-        <h1 class="display-3">管理后台</h1>
-        <!--<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>-->
-        <hr class="my-2">
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="/admin/user" role="button">更新资料</a>
-            <a class="btn btn-primary btn-lg" href="/admin/publish" role="button">发布新物流</a>
-            <a class="btn btn-primary btn-lg" href="/admin/update" role="button">更新物流</a>
-        </p>
-    </div>
+    <table class="table table-striped" style="margin-top: 30px;">
+        <thead class="table-inverse">
+        <tr>
+            <th>id</th>
+            <th>标题</th>
+            <th>描述</th>
+            <th>是否完成</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{# if logistics}}
+            {{# each logistics}}
+                <tr>
+                    <th scope="row">{{id}}</th>
+                    <td>{{title}}</td>
+                    <td>{{describe}}</td>
+                    <td><span class="tag tag-pill {{finishTagJudge finish}}">{{isFinished finish}}</span></td>
+                    <td><a class="btn btn-primary btn-sm" href="/admin/update/{{id}}">更新物流</a></td>
+                </tr>
+            {{/each}}
+        {{else}}
+            <tr>
+                <th scope="row">暂无</th>
+                <td>暂无</td>
+                <td>暂无</td>
+                <td>暂无</td>
+                <td>暂无</td>
+            </tr>
+        {{/if}}
+        </tbody>
+    </table>
 </div>

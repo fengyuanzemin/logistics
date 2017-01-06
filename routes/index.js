@@ -3,8 +3,8 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../model/User');
+var Logistics = require('../model/Logistics');
 
-/* GET home page. */
 router.get('/', function (req, res, next) {
     if (res.locals.user) {
         res.redirect('/admin');
@@ -14,11 +14,35 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/list', function (req, res, next) {
-    res.render('list', {title: '物流信息'});
+    Logistics.findAll(function (err, rows) {
+        if (err) {
+            req.flash('error_msg', '拉取物流信息失败');
+            res.redirect('/');
+            return;
+        }
+        res.render('list', {
+            title: '物流列表',
+            list: rows
+        });
+    });
 });
 
 router.get('/search', function (req, res, next) {
     res.render('search', {title: '搜索'});
+});
+
+router.post('/search', function (req, res, next) {
+    Logistics.findById(req.body.id, function (err, rows) {
+        if (err) {
+            req.flash('error_msg', '拉取物流信息失败');
+            res.redirect('/');
+            return;
+        }
+        res.render('list', {
+            title: '搜索结果',
+            list: rows
+        });
+    });
 });
 
 router.get('/login', function (req, res, next) {
@@ -126,9 +150,6 @@ passport.deserializeUser(function (phone, done) {
         done(err, user);
     });
 });
-
-
-
 
 //登录验证
 function ensureAuthenticated(req, res, next) {

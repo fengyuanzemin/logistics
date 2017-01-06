@@ -32,20 +32,18 @@ create table  if not exists logistics (
 	finish int default 0,
 	userId int not null,
 	title varchar(50) not null,
-	`describe` varchar(50),
+	`describe` varchar(140),
 	foreign key (userId)  references user (id)
 );
 
 create table  if not exists detail (
 	id int not null auto_increment primary key,
-	createAt timestamp default current_timestamp,
+	createdAt timestamp default current_timestamp,
 	`action` varchar(100) not null,
 	logisticsId int not null,
 	foreign key (logisticsId) references `logistics`(id)
 );
 ```
-
-
 
 ## 运行
 
