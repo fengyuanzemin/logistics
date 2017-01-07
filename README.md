@@ -3,7 +3,7 @@
 ## 下载
 
 ```shell
-git clone 
+git clone git@github.com:fengyuanzemin/logistics.git
 ```
 
 ## 数据库建表
