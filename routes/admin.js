@@ -9,17 +9,34 @@ router.get('/', function (req, res, next) {
         res.redirect('/login');
         return;
     }
-    Logistics.findByUserId(res.locals.user.id, function (err, rows) {
-        if (err) {
-            req.flash('error_msg', '拉取用户物流失败');
-            res.redirect('/admin');
-            return;
-        }
-        res.render('admin', {
-            title: '后台管理',
-            logistics: rows
-        })
-    });
+    // 是管理员
+    if (res.locals.user.admin) {
+        User.findAll(function (err, rows) {
+            if (err) {
+                req.flash('error_msg', '拉取用户信息失败');
+                res.redirect('/admin');
+                return;
+            }
+            res.render('admin', {
+                title: '后台管理',
+                users: rows
+            });
+        });
+    } else {
+        // 普通用户
+        Logistics.findByUserId(res.locals.user.id, function (err, rows) {
+            if (err) {
+                req.flash('error_msg', '拉取用户物流失败');
+                res.redirect('/admin');
+                return;
+            }
+            res.render('admin', {
+                title: '后台管理',
+                logistics: rows
+            });
+        });
+    }
+
 });
 
 router.get('/user', function (req, res, next) {
@@ -123,6 +140,36 @@ router.post('/publish', function (req, res, next) {
             res.redirect('/admin');
         }
     });
+});
+
+// 提升该用户为管理员
+router.post('/upgrade', function (req, res, next) {
+    User.upgrade(req.body.id, function (err, row) {
+        if (err) {
+            req.flash('error_msg', '修改失败');
+            res.redirect('/admin');
+            return;
+        }
+        if (row) {
+            req.flash('success_msg', '修改成功');
+            res.redirect('/admin');
+        }
+    })
+});
+
+// 删除用户
+router.post('/delete', function (req, res, next) {
+    User.delete(req.body.id, function (err, row) {
+        if (err) {
+            req.flash('error_msg', '删除失败');
+            res.redirect('/admin');
+            return;
+        }
+        if (row) {
+            req.flash('success_msg', '删除成功');
+            res.redirect('/admin');
+        }
+    })
 });
 
 module.exports = router;

@@ -5,12 +5,14 @@
         {{# if list}}
             {{#each list}}
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card card-block">
-                        <h4 class="card-title">{{title}}</h4>
-                        <p class="card-text des">{{describe}}</p>
-                        <span class="card-text tag tag-pill {{finishTagJudge finish}}">{{isFinished finish}}</span>
-                        <span class="card-text">物流单号：{{id}}</span>
-                    </div>
+                    <a href="/detail/{{id}}" class="a-container">
+                        <div class="card card-block">
+                            <h4 class="card-title">{{title}}</h4>
+                            <p class="card-text des">{{describe}}</p>
+                            <span class="card-text tag tag-pill {{finishTagJudge finish}}">{{isFinished finish}}</span>
+                            <span class="card-text">物流单号：{{id}}</span>
+                        </div>
+                    </a>
                 </div>
             {{/each}}
         {{else}}

@@ -33,7 +33,7 @@ create table  if not exists logistics (
 	userId int not null,
 	title varchar(50) not null,
 	`describe` varchar(140),
-	foreign key (userId)  references user (id)
+	foreign key (userId)  references user (id) on delete cascade
 );
 
 create table  if not exists detail (
@@ -41,7 +41,7 @@ create table  if not exists detail (
 	createdAt timestamp default current_timestamp,
 	`action` varchar(100) not null,
 	logisticsId int not null,
-	foreign key (logisticsId) references `logistics`(id)
+	foreign key (logisticsId) references `logistics`(id) on delete cascade
 );
 ```
 
@@ -51,6 +51,8 @@ create table  if not exists detail (
 
     npm install
     
+### 根据你的数据库配置`./config/config.js`
+
 ### 确保MySQL开启，并成功建表
 
 ### 运行

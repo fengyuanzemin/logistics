@@ -5,7 +5,7 @@ var handlebars = require('express-handlebars');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var helpers = require('./helper/helper');
+var helpers = require('./utils/helper');
 var flash = require('connect-flash');
 
 var session = require('express-session');

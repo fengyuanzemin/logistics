@@ -27,6 +27,20 @@ router.get('/list', function (req, res, next) {
     });
 });
 
+router.get('/detail/:id', function (req, res, next) {
+    Logistics.findDetailById(req.params.id,  function (err, rows) {
+        if (err) {
+            req.flash('error_msg', '拉取物流详情失败');
+            res.redirect('/list');
+            return;
+        }
+        res.render('detail', {
+            title: '物流详情',
+            detail: rows
+        })
+    });
+});
+
 router.get('/search', function (req, res, next) {
     res.render('search', {title: '搜索'});
 });

@@ -1,36 +1,78 @@
 <div class="container">
     {{>header}}
     {{>alert}}
-    <table class="table table-striped" style="margin-top: 30px;">
-        <thead class="table-inverse">
-        <tr>
-            <th>id</th>
-            <th>标题</th>
-            <th>描述</th>
-            <th>是否完成</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{# if logistics}}
-            {{# each logistics}}
+    {{#if user.admin}}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-striped" style="margin-top: 30px;">
+                <thead class="table-inverse">
                 <tr>
-                    <th scope="row">{{id}}</th>
-                    <td>{{title}}</td>
-                    <td>{{describe}}</td>
-                    <td><span class="tag tag-pill {{finishTagJudge finish}}">{{isFinished finish}}</span></td>
-                    <td><a class="btn btn-primary btn-sm" href="/admin/update/{{id}}">更新物流</a></td>
+                    <th>用户名</th>
+                    <th>手机</th>
+                    <th>性别</th>
+                    <th>操作</th>
                 </tr>
-            {{/each}}
-        {{else}}
+                </thead>
+                <tbody>
+                {{# each users}}
+                    <tr>
+                        <td scope="row">{{name}}</td>
+                        <td>{{phone}}</td>
+                        <td>{{sexFormat sex}}</td>
+                        <td>
+                            {{#if admin}}
+                                <span class="tag tag-success">管理员</span>
+                            {{else}}
+                                <form action="/admin/delete" method="post" style="display: inline-block;">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <input type="submit" class="btn btn-danger btn-sm" value="删除">
+                                </form>
+                                <form action="/admin/upgrade" method="post" style="display: inline-block;">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <input type="submit" class="btn btn-primary btn-sm" value="提升为管理员">
+                                </form>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    {{else}}
+        <table class="table table-striped" style="margin-top: 30px;">
+            <thead class="table-inverse">
             <tr>
-                <th scope="row">暂无</th>
-                <td>暂无</td>
-                <td>暂无</td>
-                <td>暂无</td>
-                <td>暂无</td>
+                <th>物流单号</th>
+                <th>标题</th>
+                <th>描述</th>
+                <th>是否完成</th>
+                <th>操作</th>
             </tr>
-        {{/if}}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {{# if logistics}}
+                {{# each logistics}}
+                    <tr>
+                        <th scope="row">{{id}}</th>
+                        <td>{{title}}</td>
+                        <td>{{describe}}</td>
+                        <td><span class="tag tag-pill {{finishTagJudge finish}}">{{isFinished finish}}</span></td>
+                        {{# if finish}}
+                            <td><a class="btn btn-primary btn-sm" href="/admin/update/{{id}}">查看物流</a></td>
+                        {{else}}
+                            <td><a class="btn btn-primary btn-sm" href="/admin/update/{{id}}">更新物流</a></td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            {{else}}
+                <tr>
+                    <th scope="row">暂无</th>
+                    <td>暂无</td>
+                    <td>暂无</td>
+                    <td>暂无</td>
+                    <td>暂无</td>
+                </tr>
+            {{/if}}
+            </tbody>
+        </table>
+    {{/if}}
 </div>

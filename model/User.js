@@ -46,14 +46,48 @@ User.register = function (phone, password, callback) {
 User.update = function (name, password, sex, email, address, id, callback) {
     var sql = "update `user` set name='" + name + "', " +
         "password='" + password + "', sex='" + sex + "', email='" + email + "', " +
-        "address='" + address + "' where id=" + id+";";
+        "address='" + address + "' where id=" + id + ";";
     db.exec(sql, '', function (err, res) {
-        if(err) {
+        if (err) {
             return callback(err);
         }
         return callback(err, res.changedRows);
     });
 
+};
+
+// 拉取所有用户信息，管理员
+User.findAll = function (callback) {
+    var sql = "select * from `user`";
+    db.exec(sql, '', function (err, res) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(err, res);
+    });
+};
+
+// 删除用户
+User.delete = function (id, callback) {
+    var sql = "delete from `user` where id = " + id;
+    console.log(sql)
+    db.exec(sql, '', function (err, res) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(err, res.affectedRows);
+    });
+};
+
+// 提升用户为管理员
+User.upgrade = function (id, callback) {
+    var sql = "update `user` set admin = 1 where id = " + id;
+    db.exec(sql, '', function (err, res) {
+        if (err) {
+            return callback(err);
+        }
+        return callback(err, res.changedRows);
+    });
 };
 
 module.exports = User;

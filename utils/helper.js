@@ -18,6 +18,11 @@ Handlebars.registerHelper('timeFormat', function (time) {
         judge10(date.getHours()) + ':' + judge10(date.getMinutes());
 });
 
+// 性别格式化
+Handlebars.registerHelper('sexFormat', function (sex) {
+    return sex === 'm' ? '男' : '女';
+});
+
 function judge10(num) {
     if (num < 10) {
         return '0' + num;
