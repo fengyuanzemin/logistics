@@ -113,10 +113,6 @@ passport.use('local-login', new LocalStrategy({
 );
 
 router.post('/register', function (req, res, next) {
-    if (req.body.password !== req.body.password2) {
-        req.flash('error_msg', '密码不一致');
-        return res.redirect('/register');
-    }
     passport.authenticate('local-register', function (err, user, info) {
         if (err) {
             return next(err);

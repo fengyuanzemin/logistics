@@ -1,4 +1,5 @@
 <!-- 登录页 -->
+<link rel="stylesheet" href="fonts/iconfont.css">
 <div class="container">
     {{>header}}
     {{>alert}}
@@ -8,10 +9,12 @@
             <form action="/register" method="POST" class="login-body" role="form">
                 <input type="text" class="form-control" name="phone" placeholder="手机号" required
                        autofocus="true" autocomplete="off" maxlength="11">
-                <input type="password" class="form-control" name="password" placeholder="密码"
-                       required>
-                <input type="password" class="form-control" name="password2" placeholder="确认密码"
-                       required>
+                <div class="input-container">
+                    <input type="password" class="form-control" name="password" placeholder="密码"
+                           required>
+                    <span class="iconfont icon-unvisible"></span>
+                </div>
+
                 <input class="btn button-blue btn-block" type="submit" value="完成">
                 <a href="/login" class="login-checkout float-xs-right">已有账号？去登录</a>
             </form>
@@ -19,5 +22,29 @@
     </div>
 </div>
 <style>
+    .input-container {
+        position: relative;
+        margin-bottom: 15px;
+    }
 
+    .iconfont {
+        position: absolute;
+        right: 8px;
+        bottom: 4px;
+        z-index: 10;
+        cursor: pointer;
+    }
 </style>
+<script>
+    $('.iconfont').click(function () {
+        if ($(this).hasClass('icon-unvisible')) {
+            $(this).removeClass('icon-unvisible');
+            $(this).addClass('icon-visible');
+            $('input[name="password"]').prop('type', 'text');
+        } else {
+            $(this).removeClass('icon-visible');
+            $(this).addClass('icon-unvisible');
+            $('input[name="password"]').prop('type', 'password');
+        }
+    });
+</script>
