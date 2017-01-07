@@ -60,3 +60,10 @@ create table  if not exists detail (
 
 打开 http://localhost:3000
 
+# 关于
+
+### 借鉴
+图书馆管理系统 https://github.com/lxz612/libsystem
+
+### License
+  MIT
