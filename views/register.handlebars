@@ -10,11 +10,10 @@
                 <input type="text" class="form-control" name="phone" placeholder="手机号" required
                        autofocus="true" autocomplete="off" maxlength="11">
                 <div class="input-container">
-                    <input type="password" class="form-control" name="password" placeholder="密码"
-                           required>
+                    <input type="password" data-toggle="tooltip" data-placement="left" class="form-control" name="password" placeholder="密码"
+                           required title="请不要用真实密码，本网站概不负责">
                     <span class="iconfont icon-unvisible"></span>
                 </div>
-
                 <input class="btn button-blue btn-block" type="submit" value="完成">
                 <a href="/login" class="login-checkout float-xs-right">已有账号？去登录</a>
             </form>
@@ -36,7 +35,11 @@
     }
 </style>
 <script>
-    $('.iconfont').click(function () {
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    $('.iconfont').click(function (e) {
+        e.stopPropagation();
         if ($(this).hasClass('icon-unvisible')) {
             $(this).removeClass('icon-unvisible');
             $(this).addClass('icon-visible');
