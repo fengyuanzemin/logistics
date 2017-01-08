@@ -6,13 +6,13 @@ var Logistics = {};
 
 // 发布物流
 Logistics.publish = function (title, des, id, callback) {
-    var sql = "insert into logistics (`title`, `describe`, `userId`) values ('" + title + "','" + des + "'," + id + ")";
-    db.exec(sql, '', function (err, res) {
+    var sql = "insert into logistics set ?";
+    db.exec(sql, {title: title, describe: des, userId: id}, function (err, res) {
         if (err) {
             return callback(err)
         }
-        var sqlInsertDetail = "insert into detail (`action`, `logisticsId`) values ('" + '开始' + "', " + res.insertId + ")";
-        db.exec(sqlInsertDetail, '', function (err, res) {
+        var sqlInsertDetail = "insert into detail set ?";
+        db.exec(sqlInsertDetail, {action: '开始', logisticsId: res.insertId}, function (err, res) {
             if (err) {
                 return callback(err)
             }
@@ -23,8 +23,8 @@ Logistics.publish = function (title, des, id, callback) {
 
 // 根据用户找物流
 Logistics.findByUserId = function (userId, callback) {
-    var sql = "select * from `logistics` where userId = " + userId;
-    db.exec(sql, '', function (err, rows) {
+    var sql = "select * from `logistics` where userId = ?";
+    db.exec(sql, [userId], function (err, rows) {
         if (err) {
             return callback(err);
         }
@@ -34,8 +34,8 @@ Logistics.findByUserId = function (userId, callback) {
 
 // 根据物流Id找物流详情
 Logistics.findDetailById = function (id, callback) {
-    var sql = "select * from `detail` where logisticsId = " + id;
-    db.exec(sql, '', function (err, rows) {
+    var sql = "select * from `detail` where logisticsId = ?";
+    db.exec(sql, [id], function (err, rows) {
         if (err) {
             return callback(err);
         }
@@ -46,8 +46,8 @@ Logistics.findDetailById = function (id, callback) {
 
 // 更新物流详情
 Logistics.update = function (action, id, callback) {
-    var sql = "insert into `detail` (`action`, `logisticsId`) values ('" + action + "', " + id + ");";
-    db.exec(sql, '', function (err, rows) {
+    var sql = "insert into `detail` set ?";
+    db.exec(sql, {action: action, logisticsId: id}, function (err, rows) {
         if (err) {
             return callback(err);
         }
@@ -68,8 +68,8 @@ Logistics.findAll = function (callback) {
 
 // 根据id找物流信息
 Logistics.findById = function (id, callback) {
-    var sql = "select * from `logistics` where id = " + id;
-    db.exec(sql, '', function (err, rows) {
+    var sql = "select * from `logistics` where id = ?";
+    db.exec(sql, [id], function (err, rows) {
         if (err) {
             return callback(err);
         }
@@ -79,14 +79,13 @@ Logistics.findById = function (id, callback) {
 
 // 签收
 Logistics.finish = function (id, callback) {
-    var sql = "update `logistics` set `finish` = 1 where id = " + id;
-    db.exec(sql, '', function (err, rows) {
+    var sql = "update `logistics` set `finish` = ? where id = ?";
+    db.exec(sql, [1, id], function (err) {
         if (err) {
             return callback(err);
         }
-        var sqlInsert = "insert into `detail` (`action`, `logisticsId`) " +
-            "values ('签收', " + id + ");";
-        db.exec(sqlInsert, '', function (err, rows) {
+        var sqlInsert = "insert into `detail` set ?";
+        db.exec(sqlInsert, {action: '签收', logisticsId: id}, function (err, rows) {
             if (err) {
                 return callback(err);
             }

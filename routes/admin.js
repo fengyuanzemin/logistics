@@ -123,7 +123,7 @@ router.post('/userUpdate', function (req, res, next) {
         }
         if (row) {
             req.flash('success_msg', '修改成功');
-            res.redirect('/admin');
+            res.redirect('/admin/user');
         }
     });
 });

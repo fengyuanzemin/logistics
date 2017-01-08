@@ -28,7 +28,7 @@ router.get('/list', function (req, res, next) {
 });
 
 router.get('/detail/:id', function (req, res, next) {
-    Logistics.findDetailById(req.params.id,  function (err, rows) {
+    Logistics.findDetailById(req.params.id, function (err, rows) {
         if (err) {
             req.flash('error_msg', '拉取物流详情失败');
             res.redirect('/list');
@@ -102,12 +102,13 @@ passport.use('local-login', new LocalStrategy({
                 return done(err);
             }
             if (!user) {
-                return done(null, false, {message: '找不到用户名4444'});
+                return done(null, false, {message: '找不到用户名2333'});
             }
-            if (user.password !== password) {
+            if (user.password === password) {
+                return done(null, user, {message: '登录成功'});
+            } else {
                 return done(null, false, {message: '密码匹配有误!'});
             }
-            return done(null, user, {message: '登录成功'});
         });
     })
 );

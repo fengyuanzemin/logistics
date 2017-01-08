@@ -14,7 +14,7 @@ Handlebars.registerHelper('finishTagJudge', function (finish) {
 // 时间格式化
 Handlebars.registerHelper('timeFormat', function (time) {
     var date = new Date(time);
-    return date.getFullYear() + '-' + judge10(date.getMonth() + 1) + '-' + judge10(date.getDay()) + ' ' +
+    return date.getFullYear() + '-' + judge10(date.getMonth() + 1) + '-' + judge10(date.getDate()) + ' ' +
         judge10(date.getHours()) + ':' + judge10(date.getMinutes());
 });
 
@@ -24,7 +24,7 @@ Handlebars.registerHelper('sexFormat', function (sex) {
 });
 
 function judge10(num) {
-    if (num < 10) {
+    if (+num < 10) {
         return '0' + num;
     }
     return num;
