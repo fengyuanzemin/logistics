@@ -33,7 +33,7 @@ create table  if not exists logistics (
 	userId int not null,
 	title varchar(50) not null,
 	`describe` varchar(140),
-	foreign key (userId)  references user (id) on delete cascade
+	foreign key (userId) references user (id) on delete cascade
 );
 
 create table  if not exists detail (
@@ -47,15 +47,15 @@ create table  if not exists detail (
 
 ## 运行
 
-### 安装依赖
+### 1. 安装依赖
 
     npm install
     
-### 根据你的数据库配置`./config/config.js`
+### 2. 根据你的数据库配置`./config/config.js`
 
-### 确保MySQL开启，并成功建表
+### 3. 确保MySQL开启，并成功建表
 
-### 运行
+### 4. 运行
     npm start
 
 打开 http://localhost:3000
