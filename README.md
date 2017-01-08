@@ -22,7 +22,7 @@ create table if not exists user (
 	phone varchar(30) not null unique,
 	admin int default 0,
 	address varchar(50) default '',
-	password varchar(50) not null,
+	password varchar(100) not null,
 	sex char(1) default 'm',
 	email varchar(30) default '233333@qq.com'
 );

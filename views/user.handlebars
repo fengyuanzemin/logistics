@@ -4,7 +4,7 @@
     <div class="row login-box">
         <div class="login col-lg-4 col-md-6 col-sm-8 col-xs-10" style="padding-bottom: 15px;top:0;">
             <h4 class="login-header text-center">个人资料修改</h4>
-            <form action="/admin/userUpdate" method="POST" class="login-body" role="form">
+            <form action="/admin/user/update" method="POST" class="login-body" role="form">
                 <input type="text" class="form-control" name="name" placeholder="修改昵称" required
                        autocomplete="off" value="{{user.name}}">
                 <label class="login-item form-check-inline">
@@ -15,10 +15,9 @@
                 </label>
                 <input type="email" class="form-control" name="email" placeholder="修改邮箱" required
                        autocomplete="off" value="{{user.email}}">
-                <input type="password" class="form-control" name="password" placeholder="修改密码"
-                       required value="{{user.password}}">
                 <input type="hidden" name="id" value="{{user.id}}">
                 <textarea name="address" title="地址" class="form-control" cols="30" rows="4">{{user.address}}</textarea>
+                <a class="btn btn-info btn-block" href="/admin/user/password" style="font-weight: 300;">修改密码</a>
                 <input class="btn button-blue btn-block" type="submit" value="完成">
             </form>
         </div>

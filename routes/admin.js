@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../model/User');
+var bcrypt = require('bcrypt');
+var saltRounds = require('../config/salt');
 var Logistics = require('../model/Logistics');
 
 router.get('/', function (req, res, next) {
@@ -46,6 +48,16 @@ router.get('/user', function (req, res, next) {
         return;
     }
     res.render('user', {title: '用户信息修改'});
+});
+
+// 修改密码
+router.get('/user/password', function (req, res, next) {
+    if (!res.locals.user) {
+        req.flash('error_msg', '用户未登录');
+        res.redirect('/login');
+        return;
+    }
+    res.render('password', {title: '修改密码'});
 });
 
 router.get('/publish', function (req, res, next) {
@@ -114,8 +126,9 @@ router.post('/finish', function (req, res, next) {
     });
 });
 
-router.post('/userUpdate', function (req, res, next) {
-    User.update(req.body.name, req.body.password, req.body.sex, req.body.email, req.body.address, req.body.id, function (err, row) {
+// 个人资料修改
+router.post('/user/update', function (req, res, next) {
+    User.update(req.body.name, req.body.sex, req.body.email, req.body.address, req.body.id, function (err, row) {
         if (err) {
             req.flash('error_msg', '修改失败');
             res.redirect('/admin/user');
@@ -126,6 +139,24 @@ router.post('/userUpdate', function (req, res, next) {
             res.redirect('/admin/user');
         }
     });
+});
+
+// 修改密码
+router.post('/user/password', function (req, res, next) {
+    bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
+        User.password(hash, req.body.id, function (err, row) {
+            if (err) {
+                req.flash('error_msg', '修改失败');
+                res.redirect('/admin/user/password');
+                return;
+            }
+            if (row) {
+                req.flash('success_msg', '修改成功');
+                res.redirect('/admin/user');
+            }
+        });
+    });
+
 });
 
 router.post('/publish', function (req, res, next) {

@@ -38,16 +38,38 @@ User.register = function (phone, password, callback) {
 };
 
 // 用户信息更新
-User.update = function (name, password, sex, email, address, id, callback) {
-    var sql = "update `user` set name = ?, password = ?, sex = ?, email = ?, " +
-        "address = ? where id = ?;";
-    db.exec(sql, [name, password, sex, email, address, id], function (err, res) {
+User.update = function (name, sex, email, address, id, callback) {
+    var sql = "select * from `user` where id = ?";
+    db.exec(sql, [id], function (err, rows) {
         if (err) {
             return callback(err);
         }
-        return callback(err, res.changedRows);
+        // 发现提交上来的和原来的不一样
+        if (rows[0].name !== name || rows[0].sex !== sex || rows[0].email !== email ||
+            rows[0].address !== address) {
+            var sqlUpdate = "update `user` set name = ?, sex = ?, email = ?, " +
+                "address = ? where id = ?;";
+            db.exec(sqlUpdate, [name, sex, email, address, id], function (error, res) {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(error, res.changedRows);
+            });
+        } else {
+            return callback('用户信息未修改');
+        }
     });
+};
 
+// 用户密码更新
+User.password = function (password, id, callback) {
+    var sql = "update `user` set password = ? where id = ?";
+    db.exec(sql, [password, id], function (error, res) {
+        if (error) {
+            return callback(error);
+        }
+        return callback(error, res.changedRows);
+    });
 };
 
 // 拉取所有用户信息，管理员

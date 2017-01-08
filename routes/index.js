@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var bcrypt = require('bcrypt');
+var saltRounds = require('../config/salt');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../model/User');
 var Logistics = require('../model/Logistics');
@@ -104,11 +106,13 @@ passport.use('local-login', new LocalStrategy({
             if (!user) {
                 return done(null, false, {message: '找不到用户名2333'});
             }
-            if (user.password === password) {
-                return done(null, user, {message: '登录成功'});
-            } else {
-                return done(null, false, {message: '密码匹配有误!'});
-            }
+            bcrypt.compare(password, user.password).then(function (res) {
+                if (res) {
+                    return done(null, user, {message: '登录成功'});
+                } else {
+                    return done(null, false, {message: '用户不存在或者密码不正确'});
+                }
+            });
         });
     })
 );
@@ -122,7 +126,7 @@ router.post('/register', function (req, res, next) {
             req.flash('error_msg', info.message);
             return res.redirect('/register');
         }
-        req.login(user, function (err) {//这里内部会调用passport.serializeUser()
+        req.login(user, function (err) {// 这里内部会调用passport.serializeUser()
             if (err) {
                 return next(err);
             }
@@ -138,14 +142,17 @@ passport.use('local-register', new LocalStrategy({
         passwordField: 'password'
     },
     function (phone, password, done) {
-        User.register(phone, password, function (err, user) {
-            if (err) {
-                return done(err);
-            }
-            return done(null, user, {message: '注册成功'});
+        bcrypt.hash(password, saltRounds).then(function (hash) {
+            User.register(phone, hash, function (err, user) {
+                if (err) {
+                    return done(err);
+                }
+                return done(null, user, {message: '注册成功'});
+            });
         });
     })
-);
+)
+;
 
 // serializeUser 在用户登录验证成功以后将会把用户的数据存储到 session 中（在这里
 // 存到 session 中的是用户的 username）。在这里的 user 应为我们之前在 new
