@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1483762559682'); /* IE9*/
-  src: url('iconfont.eot?t=1483762559682#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1483762559682') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1483762559682') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1483762559682#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1483929761042'); /* IE9*/
+  src: url('iconfont.eot?t=1483929761042#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1483929761042') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1483929761042') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1483929761042#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -18,4 +18,8 @@
 .icon-unvisible:before { content: "\e613"; }
 
 .icon-visible:before { content: "\e614"; }
+
+.icon-iconfontzhuce:before { content: "\e639"; }
+
+.icon-denglu:before { content: "\f0052"; }
 

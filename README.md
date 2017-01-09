@@ -18,13 +18,13 @@ use logistics;
 
 create table if not exists user (
 	id int not null  auto_increment primary key,
-	name varchar(20) default '张飞',
+	name varchar(20),
 	phone varchar(30) not null unique,
 	admin int default 0,
 	address varchar(50) default '',
 	password varchar(100) not null,
 	sex char(1) default 'm',
-	email varchar(30) default '233333@qq.com'
+	email varchar(30)
 );
 	
 create table  if not exists logistics (

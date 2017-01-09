@@ -4,14 +4,15 @@
     {{>alert}}
     <div class="row login-box">
         <div class="login col-lg-4 col-md-6 col-sm-8 col-xs-10">
-            <h4 class="login-header text-center">注册</h4>
+            <h4 class="login-header text-center"><span class="iconfont icon-iconfontzhuce"></span>注册</h4>
             <form action="/register" method="POST" class="login-body" role="form">
                 <input type="text" class="form-control" name="phone" placeholder="手机号" required
                        autofocus="true" autocomplete="off" maxlength="11">
                 <div class="input-container">
-                    <input type="password" data-toggle="tooltip" data-placement="left" class="form-control" name="password" placeholder="密码"
+                    <input type="password" data-toggle="tooltip" data-placement="left" class="form-control"
+                           name="password" placeholder="密码"
                            required title="请不要用真实密码，本网站概不负责">
-                    <span class="iconfont icon-unvisible"></span>
+                    <span class="iconfont icon-unvisible icon-click"></span>
                 </div>
                 <input class="btn button-blue btn-block" type="submit" value="完成">
                 <a href="/login" class="login-checkout float-xs-right">已有账号？去登录</a>
@@ -25,7 +26,14 @@
         margin-bottom: 15px;
     }
 
-    .iconfont {
+    .icon-iconfontzhuce {
+        font-size: 20px;
+        position: relative;
+        top: -3px;
+        margin-right: 5px;
+    }
+
+    .icon-click {
         position: absolute;
         right: 8px;
         bottom: 4px;

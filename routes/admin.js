@@ -130,7 +130,11 @@ router.post('/finish', function (req, res, next) {
 router.post('/user/update', function (req, res, next) {
     User.update(req.body.name, req.body.sex, req.body.email, req.body.address, req.body.id, function (err, row) {
         if (err) {
-            req.flash('error_msg', '修改失败');
+            if (err === '用户信息未修改') {
+                req.flash('error_msg', err);
+            } else {
+                req.flash('error_msg', '修改失败');
+            }
             res.redirect('/admin/user');
             return;
         }
