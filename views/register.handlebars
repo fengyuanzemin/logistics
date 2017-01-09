@@ -10,9 +10,15 @@
                        autofocus="true" autocomplete="off" maxlength="11">
                 <div class="input-container">
                     <input type="password" data-toggle="tooltip" data-placement="left" class="form-control"
-                           name="password" placeholder="密码"
+                           name="password" placeholder="密码" maxlength="14"
                            required title="请不要用真实密码，本网站概不负责">
                     <span class="iconfont icon-unvisible icon-click"></span>
+                </div>
+                <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <input type="text" placeholder="验证码" autocomplete="off" name="captcha" maxlength="6" required class="form-control">
+                    </div>
+                    <img src="/captcha" class="col-lg-5 col-md-5 col-sm-5 col-xs-5 img-captcha">
                 </div>
                 <input class="btn button-blue btn-block" type="submit" value="完成">
                 <a href="/login" class="login-checkout float-xs-right">已有账号？去登录</a>
@@ -56,5 +62,9 @@
             $(this).addClass('icon-unvisible');
             $('input[name="password"]').prop('type', 'password');
         }
+    });
+    $('.img-captcha').click(function (e) {
+        e.stopPropagation();
+        $(this).attr('src', '/captcha?k='+Math.random());
     });
 </script>

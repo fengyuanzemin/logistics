@@ -7,6 +7,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../model/User');
 var Logistics = require('../model/Logistics');
 
+var ccap = require('ccap');
+var captchaString = '';
+
 router.get('/', function (req, res, next) {
     if (res.locals.user) {
         res.redirect('/admin');
@@ -69,6 +72,12 @@ router.get('/register', function (req, res, next) {
     res.render('register', {title: '注册'});
 });
 
+router.get('/captcha', function (req, res, next) {
+    var captcha = ccap().get();
+    captchaString = captcha[0];
+    res.end(captcha[1]);
+});
+
 //退出登录
 router.get('/logout', function (req, res) {
     req.logout();
@@ -76,22 +85,27 @@ router.get('/logout', function (req, res) {
 });
 
 router.post('/login', function (req, res, next) {
-    passport.authenticate('local-login', function (err, user, info) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            req.flash('error_msg', info.message);
-            return res.redirect('/login');
-        }
-        req.login(user, function (err) {//这里内部会调用passport.serializeUser()
+    if (req.body.captcha.toLowerCase() === captchaString.toLowerCase()) {
+        passport.authenticate('local-login', function (err, user, info) {
             if (err) {
                 return next(err);
             }
-            req.flash('success_msg', info.message);
-            return res.redirect('/admin');
-        });
-    })(req, res, next);
+            if (!user) {
+                req.flash('error_msg', info.message);
+                return res.redirect('/login');
+            }
+            req.login(user, function (err) {//这里内部会调用passport.serializeUser()
+                if (err) {
+                    return next(err);
+                }
+                req.flash('success_msg', info.message);
+                return res.redirect('/admin');
+            });
+        })(req, res, next);
+    } else {
+        req.flash('error_msg', '验证码不正确');
+        return res.redirect('/login');
+    }
 });
 
 passport.use('local-login', new LocalStrategy({
@@ -118,22 +132,29 @@ passport.use('local-login', new LocalStrategy({
 );
 
 router.post('/register', function (req, res, next) {
-    passport.authenticate('local-register', function (err, user, info) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            req.flash('error_msg', info.message);
-            return res.redirect('/register');
-        }
-        req.login(user, function (err) {// 这里内部会调用passport.serializeUser()
+    if (req.body.captcha.toLowerCase() === captchaString.toLowerCase()) {
+        passport.authenticate('local-register', function (err, user, info) {
             if (err) {
-                return next(err);
+                req.flash('error_msg', err);
+                return res.redirect('/register');
             }
-            req.flash('success_msg', info.message);
-            return res.redirect('/admin');
-        });
-    })(req, res, next);
+            if (!user) {
+                req.flash('error_msg', info.message);
+                return res.redirect('/register');
+            }
+            req.login(user, function (err) {// 这里内部会调用passport.serializeUser()
+                if (err) {
+                    req.flash('error_msg', err);
+                    return res.redirect('/register');
+                }
+                req.flash('success_msg', info.message);
+                return res.redirect('/admin');
+            });
+        })(req, res, next);
+    } else {
+        req.flash('error_msg', '验证码不正确');
+        return res.redirect('/register');
+    }
 });
 
 
@@ -142,6 +163,15 @@ passport.use('local-register', new LocalStrategy({
         passwordField: 'password'
     },
     function (phone, password, done) {
+        if (!/^1(3|5|7|8)\d{9}$/.test(phone)) {
+            return done('手机号格式不正确');
+        }
+        if (password.length < 6 || password.length > 14) {
+            return done('密码长度应该在6位到14位之间');
+        }
+        if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password)) {
+            return done('密码应该包含大小写字母和数字');
+        }
         bcrypt.hash(password, saltRounds).then(function (hash) {
             User.register(phone, hash, function (err, user) {
                 if (err) {

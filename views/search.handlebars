@@ -1,15 +1,27 @@
-<!-- body -->
 <div class="container">
     {{>header}}
     {{>alert}}
-    <div class="row search-box">
-        <form action="/search" method="post" class="col-lg-8">
+    <div class="search-box">
+        <form action="/search" method="post" class="col-lg-6 col-md-8 col-xs-11 col-sm-10">
             <div class="input-group">
-                <input id="content" type="text" class="form-control" placeholder="快递单号查询">
-                <span class="input-group-btn">
-              <button id="submit" class="btn button-blue" type="button">搜索</button>
-            </span>
+                <input type="text" class="form-control" autocomplete="off" name="id" placeholder="物流单号查询" autofocus>
+                <span class="input-group-btn"><input class="btn btn-success" type="submit" value="搜索"></span>
             </div>
         </form>
     </div>
 </div>
+<style>
+    .search-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: calc(100vh - 64px);
+        flex-direction: column;
+    }
+
+    .search-box form {
+        position: relative;
+        top: -50px;
+    }
+</style>
