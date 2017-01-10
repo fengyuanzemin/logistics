@@ -147,6 +147,16 @@ router.post('/user/update', function (req, res, next) {
 
 // 修改密码
 router.post('/user/password', function (req, res, next) {
+    if (req.body.password.length < 6 || req.body.password.length > 14) {
+        req.flash('error_msg', '密码长度应该在6位到14位之间');
+        res.redirect('/admin/user/password');
+        return;
+    }
+    if (!/[A-Z]/.test(req.body.password) || !/[a-z]/.test(req.body.password) || !/\d/.test(req.body.password)) {
+        req.flash('error_msg', '密码应该包含大小写字母和数字');
+        res.redirect('/admin/user/password');
+        return;
+    }
     bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
         User.password(hash, req.body.id, function (err, row) {
             if (err) {
