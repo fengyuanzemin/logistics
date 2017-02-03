@@ -1,16 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
-var bcrypt = require('bcrypt');
-var saltRounds = require('../config/salt');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('../model/User');
-var Logistics = require('../model/Logistics');
+import express from 'express';
+import passport from 'passport';
+import bcrypt from 'bcrypt';
+import {saltRounds} from '../config/salt';
+import passportLocal from 'passport-local';
+import User from '../model/User';
+import Logistics from '../model/Logistics';
+import ccap from 'ccap';
 
-var ccap = require('ccap');
-var captchaString = '';
+const router = express.Router();
+let captchaString = '';
+const LocalStrategy = passportLocal.Strategy;
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res) => {
     if (res.locals.user) {
         res.redirect('/admin');
         return;
@@ -18,8 +19,8 @@ router.get('/', function (req, res, next) {
     res.render('index', {title: '首页'});
 });
 
-router.get('/list', function (req, res, next) {
-    Logistics.findAll(function (err, rows) {
+router.get('/list', (req, res) => {
+    Logistics.findAll((err, rows) => {
         if (err) {
             req.flash('error_msg', '拉取物流信息失败');
             res.redirect('/');
@@ -32,8 +33,8 @@ router.get('/list', function (req, res, next) {
     });
 });
 
-router.get('/detail/:id', function (req, res, next) {
-    Logistics.findDetailById(req.params.id, function (err, rows) {
+router.get('/detail/:id', (req, res) => {
+    Logistics.findDetailById(req.params.id, (err, rows) => {
         if (err) {
             req.flash('error_msg', '拉取物流详情失败');
             res.redirect('/list');
@@ -46,12 +47,12 @@ router.get('/detail/:id', function (req, res, next) {
     });
 });
 
-router.get('/search', function (req, res, next) {
+router.get('/search', (req, res) => {
     res.render('search', {title: '搜索'});
 });
 
-router.post('/search', function (req, res, next) {
-    Logistics.findById(req.body.id, function (err, rows) {
+router.post('/search', (req, res) => {
+    Logistics.findById(req.body.id, (err, rows) => {
         if (err) {
             req.flash('error_msg', '拉取物流信息失败');
             res.redirect('/');
@@ -64,29 +65,29 @@ router.post('/search', function (req, res, next) {
     });
 });
 
-router.get('/login', function (req, res, next) {
+router.get('/login', (req, res) => {
     res.render('login', {title: '登录'});
 });
 
-router.get('/register', function (req, res, next) {
+router.get('/register', (req, res) => {
     res.render('register', {title: '注册'});
 });
 
-router.get('/captcha', function (req, res, next) {
-    var captcha = ccap().get();
+router.get('/captcha', (req, res, next) => {
+    const captcha = ccap().get();
     captchaString = captcha[0];
     res.end(captcha[1]);
 });
 
 //退出登录
-router.get('/logout', function (req, res) {
+router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/login');
 });
 
-router.post('/login', function (req, res, next) {
+router.post('/login', (req, res, next) => {
     if (req.body.captcha.toLowerCase() === captchaString.toLowerCase()) {
-        passport.authenticate('local-login', function (err, user, info) {
+        passport.authenticate('local-login', (err, user, info) => {
             if (err) {
                 return next(err);
             }
@@ -94,7 +95,7 @@ router.post('/login', function (req, res, next) {
                 req.flash('error_msg', info.message);
                 return res.redirect('/login');
             }
-            req.login(user, function (err) {//这里内部会调用passport.serializeUser()
+            req.login(user, (err) => {//这里内部会调用passport.serializeUser()
                 if (err) {
                     return next(err);
                 }
@@ -113,14 +114,14 @@ passport.use('local-login', new LocalStrategy({
         passwordField: 'password'
     },
     function (phone, password, done) {
-        User.findUserByPhone(phone, function (err, user) {
+        User.findUserByPhone(phone, (err, user) => {
             if (err) {
                 return done(err);
             }
             if (!user) {
                 return done(null, false, {message: '找不到用户名2333'});
             }
-            bcrypt.compare(password, user.password).then(function (res) {
+            bcrypt.compare(password, user.password).then((res) => {
                 if (res) {
                     return done(null, user, {message: '登录成功'});
                 } else {
@@ -131,9 +132,9 @@ passport.use('local-login', new LocalStrategy({
     })
 );
 
-router.post('/register', function (req, res, next) {
+router.post('/register', (req, res, next) => {
     if (req.body.captcha.toLowerCase() === captchaString.toLowerCase()) {
-        passport.authenticate('local-register', function (err, user, info) {
+        passport.authenticate('local-register', (err, user, info) => {
             if (err) {
                 req.flash('error_msg', err);
                 return res.redirect('/register');
@@ -142,7 +143,7 @@ router.post('/register', function (req, res, next) {
                 req.flash('error_msg', info.message);
                 return res.redirect('/register');
             }
-            req.login(user, function (err) {// 这里内部会调用passport.serializeUser()
+            req.login(user, (err) => {// 这里内部会调用passport.serializeUser()
                 if (err) {
                     req.flash('error_msg', err);
                     return res.redirect('/register');
@@ -187,13 +188,13 @@ passport.use('local-register', new LocalStrategy({
 // serializeUser 在用户登录验证成功以后将会把用户的数据存储到 session 中（在这里
 // 存到 session 中的是用户的 username）。在这里的 user 应为我们之前在 new
 // LocalStrategy (fution() { ... }) 中传递到回调函数 done 的参数 user 对象（从数据// 库中获取到的）
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
     done(null, user.phone);
 });
 
 // deserializeUser 在每次请求的时候将会根据用户名读取 从 session 中读取用户的全部数据
 // 的对象，并将其封装到 req.user
-passport.deserializeUser(function (phone, done) {
+passport.deserializeUser((phone, done) => {
     User.findUserByPhone(phone, function (err, user) {
         done(err, user);
     });
@@ -209,4 +210,4 @@ function ensureAuthenticated(req, res, next) {
     }
 }
 
-module.exports = router;
+export default router;

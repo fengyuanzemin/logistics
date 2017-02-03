@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-
+require("babel-register");
+// import app from '../app';
 var app = require('../app');
 var debug = require('debug')('logistics:server');
 var http = require('http');

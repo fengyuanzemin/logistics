@@ -1,11 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../model/User');
-var bcrypt = require('bcrypt');
-var saltRounds = require('../config/salt');
-var Logistics = require('../model/Logistics');
+import express from 'express';
+import User from '../model/User';
+import bcrypt from 'bcrypt';
+import {saltRounds} from '../config/salt';
+import Logistics from '../model/Logistics';
 
-router.get('/', function (req, res, next) {
+const router = express.Router();
+router.get('/', (req, res) => {
     if (!res.locals.user) {
         req.flash('error_msg', '用户未登录');
         res.redirect('/login');
@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
     }
     // 是管理员
     if (res.locals.user.admin) {
-        User.findAll(function (err, rows) {
+        User.findAll((err, rows) => {
             if (err) {
                 req.flash('error_msg', '拉取用户信息失败');
                 res.redirect('/admin');
@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
         });
     } else {
         // 普通用户
-        Logistics.findByUserId(res.locals.user.id, function (err, rows) {
+        Logistics.findByUserId(res.locals.user.id, (err, rows) => {
             if (err) {
                 req.flash('error_msg', '拉取用户物流失败');
                 res.redirect('/admin');
@@ -41,7 +41,7 @@ router.get('/', function (req, res, next) {
 
 });
 
-router.get('/user', function (req, res, next) {
+router.get('/user', (req, res) => {
     if (!res.locals.user) {
         req.flash('error_msg', '用户未登录');
         res.redirect('/login');
@@ -51,7 +51,7 @@ router.get('/user', function (req, res, next) {
 });
 
 // 修改密码
-router.get('/user/password', function (req, res, next) {
+router.get('/user/password', (req, res) => {
     if (!res.locals.user) {
         req.flash('error_msg', '用户未登录');
         res.redirect('/login');
@@ -60,7 +60,7 @@ router.get('/user/password', function (req, res, next) {
     res.render('password', {title: '修改密码'});
 });
 
-router.get('/publish', function (req, res, next) {
+router.get('/publish', (req, res) => {
     if (!res.locals.user) {
         req.flash('error_msg', '用户未登录');
         res.redirect('/login');
@@ -70,19 +70,19 @@ router.get('/publish', function (req, res, next) {
 });
 
 
-router.get('/update/:id', function (req, res, next) {
+router.get('/update/:id', (req, res) => {
     if (!res.locals.user) {
         req.flash('error_msg', '用户未登录');
         res.redirect('/login');
         return;
     }
-    Logistics.findDetailById(req.params.id, function (err, rows) {
+    Logistics.findDetailById(req.params.id, (err, rows) => {
         if (err) {
             req.flash('error_msg', '拉取物流详情失败');
             res.redirect(req.get('referer'));
             return;
         }
-        Logistics.findById(req.params.id, function (err, logistics) {
+        Logistics.findById(req.params.id, (err, logistics) => {
             if (err) {
                 req.flash('error_msg', '拉取物流失败');
                 res.redirect(req.get('referer'));
@@ -97,8 +97,8 @@ router.get('/update/:id', function (req, res, next) {
     });
 });
 
-router.post('/update', function (req, res, next) {
-    Logistics.update(req.body.action, req.body.id, function (err, row) {
+router.post('/update', (req, res) => {
+    Logistics.update(req.body.action, req.body.id, (err, row) => {
         if (err) {
             req.flash('error_msg', '添加失败');
             res.redirect('/admin');
@@ -112,8 +112,8 @@ router.post('/update', function (req, res, next) {
 });
 
 // 已签收
-router.post('/finish', function (req, res, next) {
-    Logistics.finish(req.body.id, function (err, row) {
+router.post('/finish', (req, res) => {
+    Logistics.finish(req.body.id, (err, row) => {
         if (err) {
             req.flash('error_msg', '签收失败');
             res.redirect('/admin/update');
@@ -127,8 +127,8 @@ router.post('/finish', function (req, res, next) {
 });
 
 // 个人资料修改
-router.post('/user/update', function (req, res, next) {
-    User.update(req.body.name, req.body.sex, req.body.email, req.body.address, req.body.id, function (err, row) {
+router.post('/user/update', (req, res) => {
+    User.update(req.body.name, req.body.sex, req.body.email, req.body.address, req.body.id, (err, row) => {
         if (err) {
             if (err === '用户信息未修改') {
                 req.flash('error_msg', err);
@@ -146,7 +146,7 @@ router.post('/user/update', function (req, res, next) {
 });
 
 // 修改密码
-router.post('/user/password', function (req, res, next) {
+router.post('/user/password', (req, res) => {
     if (req.body.password.length < 6 || req.body.password.length > 14) {
         req.flash('error_msg', '密码长度应该在6位到14位之间');
         res.redirect('/admin/user/password');
@@ -157,8 +157,8 @@ router.post('/user/password', function (req, res, next) {
         res.redirect('/admin/user/password');
         return;
     }
-    bcrypt.hash(req.body.password, saltRounds).then(function (hash) {
-        User.password(hash, req.body.id, function (err, row) {
+    bcrypt.hash(req.body.password, saltRounds).then((hash) => {
+        User.password(hash, req.body.id, (err, row) => {
             if (err) {
                 req.flash('error_msg', '修改失败');
                 res.redirect('/admin/user/password');
@@ -173,8 +173,8 @@ router.post('/user/password', function (req, res, next) {
 
 });
 
-router.post('/publish', function (req, res, next) {
-    Logistics.publish(req.body.title, req.body.describe, req.body.id, function (err, row) {
+router.post('/publish', (req, res) => {
+    Logistics.publish(req.body.title, req.body.describe, req.body.id, (err, row) => {
         if (err) {
             req.flash('error_msg', '发布失败');
             res.redirect('/admin/publish');
@@ -188,8 +188,8 @@ router.post('/publish', function (req, res, next) {
 });
 
 // 提升该用户为管理员
-router.post('/upgrade', function (req, res, next) {
-    User.upgrade(req.body.id, function (err, row) {
+router.post('/upgrade', (req, res) => {
+    User.upgrade(req.body.id, (err, row) => {
         if (err) {
             req.flash('error_msg', '修改失败');
             res.redirect('/admin');
@@ -203,8 +203,8 @@ router.post('/upgrade', function (req, res, next) {
 });
 
 // 删除用户
-router.post('/delete', function (req, res, next) {
-    User.delete(req.body.id, function (err, row) {
+router.post('/delete', (req, res) => {
+    User.delete(req.body.id, (err, row) => {
         if (err) {
             req.flash('error_msg', '删除失败');
             res.redirect('/admin');
@@ -217,4 +217,4 @@ router.post('/delete', function (req, res, next) {
     })
 });
 
-module.exports = router;
+export default router;
