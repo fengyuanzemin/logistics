@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 require("babel-register");
-// import app from '../app';
+require("babel-polyfill");
 var app = require('../app');
 var debug = require('debug')('logistics:server');
 var http = require('http');

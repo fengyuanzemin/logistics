@@ -1,3 +1,7 @@
 {
-  "presets": ["env"]
+  "presets": ["env"],
+  "plugins": [
+    "transform-regenerator",
+    "transform-object-rest-spread"
+  ]
 }

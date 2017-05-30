@@ -1,11 +1,11 @@
 import express from 'express';
 import passport from 'passport';
 import bcrypt from 'bcrypt';
-import {saltRounds} from '../config/salt';
 import passportLocal from 'passport-local';
+import ccap from 'ccap';
+import saltRounds from '../config/salt';
 import User from '../model/User';
 import Logistics from '../model/Logistics';
-import ccap from 'ccap';
 
 const router = express.Router();
 let captchaString = '';
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
         res.redirect('/admin');
         return;
     }
-    res.render('index', {title: '首页'});
+    res.render('index', { title: '首页' });
 });
 
 router.get('/list', (req, res) => {
@@ -43,12 +43,12 @@ router.get('/detail/:id', (req, res) => {
         res.render('detail', {
             title: '物流详情',
             detail: rows
-        })
+        });
     });
 });
 
 router.get('/search', (req, res) => {
-    res.render('search', {title: '搜索'});
+    res.render('search', { title: '搜索' });
 });
 
 router.post('/search', (req, res) => {
@@ -66,20 +66,20 @@ router.post('/search', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.render('login', {title: '登录'});
+    res.render('login', { title: '登录' });
 });
 
 router.get('/register', (req, res) => {
-    res.render('register', {title: '注册'});
+    res.render('register', { title: '注册' });
 });
 
-router.get('/captcha', (req, res, next) => {
+router.get('/captcha', (req, res) => {
     const captcha = ccap().get();
     captchaString = captcha[0];
     res.end(captcha[1]);
 });
 
-//退出登录
+// 退出登录
 router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/login');
@@ -95,9 +95,9 @@ router.post('/login', (req, res, next) => {
                 req.flash('error_msg', info.message);
                 return res.redirect('/login');
             }
-            req.login(user, (err) => {//这里内部会调用passport.serializeUser()
+            req.login(user, (error) => { // 这里内部会调用passport.serializeUser()
                 if (err) {
-                    return next(err);
+                    return next(error);
                 }
                 req.flash('success_msg', info.message);
                 return res.redirect('/admin');
@@ -109,24 +109,20 @@ router.post('/login', (req, res, next) => {
     }
 });
 
-passport.use('local-login', new LocalStrategy({
-        usernameField: 'phone',
-        passwordField: 'password'
-    },
-    function (phone, password, done) {
+passport.use('local-login', new LocalStrategy({ usernameField: 'phone', passwordField: 'password' },
+    (phone, password, done) => {
         User.findUserByPhone(phone, (err, user) => {
             if (err) {
                 return done(err);
             }
             if (!user) {
-                return done(null, false, {message: '找不到用户名2333'});
+                return done(null, false, { message: '找不到用户名2333' });
             }
             bcrypt.compare(password, user.password).then((res) => {
                 if (res) {
-                    return done(null, user, {message: '登录成功'});
-                } else {
-                    return done(null, false, {message: '用户不存在或者密码不正确'});
+                    return done(null, user, { message: '登录成功' });
                 }
+                return done(null, false, { message: '用户不存在或者密码不正确' });
             });
         });
     })
@@ -143,9 +139,9 @@ router.post('/register', (req, res, next) => {
                 req.flash('error_msg', info.message);
                 return res.redirect('/register');
             }
-            req.login(user, (err) => {// 这里内部会调用passport.serializeUser()
+            req.login(user, (error) => { // 这里内部会调用passport.serializeUser()
                 if (err) {
-                    req.flash('error_msg', err);
+                    req.flash('error_msg', error);
                     return res.redirect('/register');
                 }
                 req.flash('success_msg', info.message);
@@ -159,11 +155,8 @@ router.post('/register', (req, res, next) => {
 });
 
 
-passport.use('local-register', new LocalStrategy({
-        usernameField: 'phone',
-        passwordField: 'password'
-    },
-    function (phone, password, done) {
+passport.use('local-register', new LocalStrategy({ usernameField: 'phone', passwordField: 'password' },
+    (phone, password, done) => {
         if (!/^1(3|5|7|8)\d{9}$/.test(phone)) {
             return done('手机号格式不正确');
         }
@@ -173,12 +166,12 @@ passport.use('local-register', new LocalStrategy({
         if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password)) {
             return done('密码应该包含大小写字母和数字');
         }
-        bcrypt.hash(password, saltRounds).then(function (hash) {
-            User.register(phone, hash, function (err, user) {
+        bcrypt.hash(password, saltRounds).then((hash) => {
+            User.register(phone, hash, (err, user) => {
                 if (err) {
                     return done(err);
                 }
-                return done(null, user, {message: '注册成功'});
+                return done(null, user, { message: '注册成功' });
             });
         });
     })
@@ -195,19 +188,9 @@ passport.serializeUser((user, done) => {
 // deserializeUser 在每次请求的时候将会根据用户名读取 从 session 中读取用户的全部数据
 // 的对象，并将其封装到 req.user
 passport.deserializeUser((phone, done) => {
-    User.findUserByPhone(phone, function (err, user) {
+    User.findUserByPhone(phone, (err, user) => {
         done(err, user);
     });
 });
-
-//登录验证
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        req.flash('error_msg', 'You are not logged in');
-        res.redirect('/login');
-    }
-}
 
 export default router;

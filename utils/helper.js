@@ -1,15 +1,17 @@
 import Handlebars from 'handlebars';
 
+function judge10(num) {
+    if (Number(num) < 10) {
+        return `0${num}`;
+    }
+    return num;
+}
 
 // 是否完成，1完成，0未完成
-Handlebars.registerHelper('isFinished', (finish) => {
-    return finish ? '完成' : '未完成';
-});
+Handlebars.registerHelper('isFinished', finish => (finish ? '完成' : '未完成'));
 
 // 是否完成的tag判断
-Handlebars.registerHelper('finishTagJudge', (finish) => {
-    return finish ? 'tag-success' : 'tag-warning';
-});
+Handlebars.registerHelper('finishTagJudge', finish => (finish ? 'tag-success' : 'tag-warning'));
 
 // 时间格式化
 Handlebars.registerHelper('timeFormat', (time) => {
@@ -18,14 +20,6 @@ Handlebars.registerHelper('timeFormat', (time) => {
 });
 
 // 性别格式化
-Handlebars.registerHelper('sexFormat', (sex) => {
-    return sex === 'm' ? '男' : '女';
-});
+Handlebars.registerHelper('sexFormat', sex => (sex === 'm' ? '男' : '女'));
 
-function judge10(num) {
-    if (Number(num) < 10) {
-        return '0' + num;
-    }
-    return num;
-}
 export default Handlebars;
